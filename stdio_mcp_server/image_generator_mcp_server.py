@@ -46,7 +46,7 @@ async def serve():
             url += "?" + "&".join(f"{key}={value}" for key, value in options.items())
 
         return url
-    
+
     return mcp
 
 
@@ -58,7 +58,6 @@ def main():
 
     server = asyncio.run(_run())
     server.run()  # This should work with stdio
-
 
 
 if __name__ == "__main__":

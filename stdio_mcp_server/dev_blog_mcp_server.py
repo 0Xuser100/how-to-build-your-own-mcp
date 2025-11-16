@@ -205,9 +205,11 @@ async def serve(auth_token: str):
             # Validate required fields
             if not title or not title.strip():
                 return {"error": "Title is required and cannot be empty"}
-            
+
             if not body_markdown or not body_markdown.strip():
-                return {"error": "Body content (body_markdown) is required and cannot be empty"}
+                return {
+                    "error": "Body content (body_markdown) is required and cannot be empty"
+                }
 
             # Prepare the article data
             article_data = {
@@ -220,19 +222,19 @@ async def serve(auth_token: str):
             if tags:
                 # Limit to max 4 tags as per dev.to requirements
                 article_data["tags"] = tags[:4]
-            
+
             if description:
                 article_data["description"] = description
-            
+
             if canonical_url:
                 article_data["canonical_url"] = canonical_url
-            
+
             if main_image:
                 article_data["main_image"] = main_image
-            
+
             if organization_id:
                 article_data["organization_id"] = organization_id
-            
+
             if series:
                 article_data["series"] = series
 
@@ -241,7 +243,6 @@ async def serve(auth_token: str):
                 "Content-Type": "application/json",
                 "api-key": auth_token,
             }
-            
 
             # Make API request
             async with httpx.AsyncClient() as client:
@@ -253,32 +254,51 @@ async def serve(auth_token: str):
                 response.raise_for_status()
 
                 article = response.json()
-                
-                logger.info(f"Article created successfully: {article.get('title', 'Unknown title')}")
+
+                logger.info(
+                    f"Article created successfully: {article.get('title', 'Unknown title')}"
+                )
                 return article
 
         except httpx.HTTPError as e:
             logger.error(f"HTTP error occurred: {e}")
-            if hasattr(e, 'response') and e.response is not None:
+            if hasattr(e, "response") and e.response is not None:
                 try:
                     error_detail = e.response.json()
-                    
+
                     status_code = e.response.status_code
-                    
+
                     # Handle specific error cases based on dev.to API responses
                     if status_code == 400:
-                        return {"error": "Bad request - Invalid article data provided", "details": error_detail}
+                        return {
+                            "error": "Bad request - Invalid article data provided",
+                            "details": error_detail,
+                        }
                     elif status_code == 401:
-                        return {"error": "Unauthorized - Invalid or missing API key", "details": error_detail}
+                        return {
+                            "error": "Unauthorized - Invalid or missing API key",
+                            "details": error_detail,
+                        }
                     elif status_code == 422:
-                        error_msg = error_detail.get('error', 'Validation error')
-                        return {"error": f"Validation error: {error_msg}", "details": error_detail}
+                        error_msg = error_detail.get("error", "Validation error")
+                        return {
+                            "error": f"Validation error: {error_msg}",
+                            "details": error_detail,
+                        }
                     elif status_code == 429:
-                        return {"error": "Rate limit reached - Please try again in 30 seconds", "details": error_detail}
+                        return {
+                            "error": "Rate limit reached - Please try again in 30 seconds",
+                            "details": error_detail,
+                        }
                     else:
-                        return {"error": f"Failed to create article (HTTP {status_code})", "details": error_detail}
+                        return {
+                            "error": f"Failed to create article (HTTP {status_code})",
+                            "details": error_detail,
+                        }
                 except Exception:
-                    return {"error": f"Failed to create article: HTTP {e.response.status_code}"}
+                    return {
+                        "error": f"Failed to create article: HTTP {e.response.status_code}"
+                    }
             return {"error": f"Failed to create article: {str(e)}"}
         except Exception as e:
             logger.error(f"Unexpected error occurred: {e}")
@@ -338,37 +358,41 @@ async def serve(auth_token: str):
                 if not title.strip():
                     return {"error": "Title cannot be empty if provided"}
                 article_data["title"] = title.strip()
-            
+
             if body_markdown is not None:
                 if not body_markdown.strip():
-                    return {"error": "Body content (body_markdown) cannot be empty if provided"}
+                    return {
+                        "error": "Body content (body_markdown) cannot be empty if provided"
+                    }
                 article_data["body_markdown"] = body_markdown
-            
+
             if published is not None:
                 article_data["published"] = published
 
             if tags is not None:
                 # Limit to max 4 tags as per dev.to requirements
                 article_data["tags"] = tags[:4]
-            
+
             if description is not None:
                 article_data["description"] = description
-            
+
             if canonical_url is not None:
                 article_data["canonical_url"] = canonical_url
-            
+
             if main_image is not None:
                 article_data["main_image"] = main_image
-            
+
             if organization_id is not None:
                 article_data["organization_id"] = organization_id
-            
+
             if series is not None:
                 article_data["series"] = series
 
             # Check if we have at least one field to update
             if not article_data:
-                return {"error": "At least one field must be provided to update the article"}
+                return {
+                    "error": "At least one field must be provided to update the article"
+                }
 
             # Prepare headers
             headers = {
@@ -386,36 +410,61 @@ async def serve(auth_token: str):
                 response.raise_for_status()
 
                 article = response.json()
-                
-                logger.info(f"Article updated successfully: {article.get('title', 'Unknown title')}")
+
+                logger.info(
+                    f"Article updated successfully: {article.get('title', 'Unknown title')}"
+                )
                 return article
 
         except httpx.HTTPError as e:
             logger.error(f"HTTP error occurred: {e}")
-            if hasattr(e, 'response') and e.response is not None:
+            if hasattr(e, "response") and e.response is not None:
                 try:
                     error_detail = e.response.json()
-                    
+
                     status_code = e.response.status_code
-                    
+
                     # Handle specific error cases based on dev.to API responses
                     if status_code == 400:
-                        return {"error": "Bad request - Invalid article data provided", "details": error_detail}
+                        return {
+                            "error": "Bad request - Invalid article data provided",
+                            "details": error_detail,
+                        }
                     elif status_code == 401:
-                        return {"error": "Unauthorized - Invalid or missing API key", "details": error_detail}
+                        return {
+                            "error": "Unauthorized - Invalid or missing API key",
+                            "details": error_detail,
+                        }
                     elif status_code == 403:
-                        return {"error": "Forbidden - You don't have permission to update this article", "details": error_detail}
+                        return {
+                            "error": "Forbidden - You don't have permission to update this article",
+                            "details": error_detail,
+                        }
                     elif status_code == 404:
-                        return {"error": f"Article with ID '{article_id}' not found", "details": error_detail}
+                        return {
+                            "error": f"Article with ID '{article_id}' not found",
+                            "details": error_detail,
+                        }
                     elif status_code == 422:
-                        error_msg = error_detail.get('error', 'Validation error')
-                        return {"error": f"Validation error: {error_msg}", "details": error_detail}
+                        error_msg = error_detail.get("error", "Validation error")
+                        return {
+                            "error": f"Validation error: {error_msg}",
+                            "details": error_detail,
+                        }
                     elif status_code == 429:
-                        return {"error": "Rate limit reached - Please try again in 30 seconds", "details": error_detail}
+                        return {
+                            "error": "Rate limit reached - Please try again in 30 seconds",
+                            "details": error_detail,
+                        }
                     else:
-                        return {"error": f"Failed to update article (HTTP {status_code})", "details": error_detail}
+                        return {
+                            "error": f"Failed to update article (HTTP {status_code})",
+                            "details": error_detail,
+                        }
                 except Exception:
-                    return {"error": f"Failed to update article: HTTP {e.response.status_code}"}
+                    return {
+                        "error": f"Failed to update article: HTTP {e.response.status_code}"
+                    }
             return {"error": f"Failed to update article: {str(e)}"}
         except Exception as e:
             logger.error(f"Unexpected error occurred: {e}")
@@ -444,8 +493,3 @@ def main(auth_token: str):
 
 if __name__ == "__main__":
     main()
-
-
-
-
-

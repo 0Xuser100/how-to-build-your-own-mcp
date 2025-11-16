@@ -16,6 +16,20 @@
         "docker"
       ],
       "description": "Run Dev.to blog MCP server from the Docker image with baked-in auth token."
-    }
+    },
+    "facilities-analysis": {
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "main.py"
+      ],
+      "tags": [
+        "facilities",
+        "analysis",
+        "http"
+      ],
+      "description": "Runs the Facilities Analysis MCP server defined in main.py via uv."
+    },
   }
 }
