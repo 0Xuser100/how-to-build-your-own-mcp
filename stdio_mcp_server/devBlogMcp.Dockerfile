@@ -2,7 +2,7 @@
 #    docker build -f devBlogMcp.Dockerfile -t dev-to-mcp-server .
 
 # to run use :
-#    docker run -i --rm dev-to-mcp-server
+#    docker run -i --rm dev-to-mcp-server --auth-token YjytdAMYCPC9Ymp8M4juGcvb
 
 
 # Use Python 3.12 slim image as the base

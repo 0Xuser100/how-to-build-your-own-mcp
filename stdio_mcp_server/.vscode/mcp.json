@@ -1,0 +1,21 @@
+{
+  "servers": {
+    "devto-blog-docker": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "dev-to-mcp-server",
+        "--auth-token",
+        "YjytdAMYCPC9Ymp8M4juGcvb"
+      ],
+      "tags": [
+        "blog",
+        "devto",
+        "docker"
+      ],
+      "description": "Run Dev.to blog MCP server from the Docker image with baked-in auth token."
+    }
+  }
+}
