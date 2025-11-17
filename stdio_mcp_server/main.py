@@ -16,7 +16,7 @@ async def serve():
 
     mcp = FastMCP(name="Facilities_Analysis_MCP_Server")
 
-    BASE_URL = "http://127.0.0.1:8000"
+    BASE_URL = "http://49.12.77.163:8001"
 
     # ---------------------------------------------------------
     # POST Tool
@@ -25,7 +25,7 @@ async def serve():
         name="analyze_facilities",
         description="""
         POST /api/ai/analysis/facilities
-        Analyze banking facilities and return the AI-generated analytical paragraph.
+        Analyze banking facilities and return the AI-generated analytical paragraphAnalyze banking facilities and return the AI-generated analytical paragraph.
         """,
     )
     async def analyze_facilities(
